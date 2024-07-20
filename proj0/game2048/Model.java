@@ -127,6 +127,7 @@ public class Model extends Observable {
                     merge[r] = true;
                     break;
                 }
+                break;
             }
             if (board.move(col, finalrow, t)) {
                 score = score + board.tile(col,finalrow).value();
