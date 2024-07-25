@@ -73,16 +73,7 @@ public class ArrayDeque<T> {
     }
 
     public T get(int index) {
-        if (nextFirst < nextLast) {
-            if (index > nextFirst && index < nextLast) {
-                return items[index];
-            }
-            else return null;
-        }
-        if (index > nextLast && index < nextFirst) {
-            return null;
-        }
-        return items[index];
+        return items[(nextFirst + 1 + index) % items.length];
     }
 
     /**
