@@ -106,6 +106,33 @@ public class LinkedListDequeTest {
     }
 
     @Test
+    /** Add 8 elements to deque; check if order is correct. */
+    public void EightDequeTest() {
+
+        LinkedListDeque<Integer> lld1 = new LinkedListDeque<Integer>();
+
+        for (int i = 0; i < 8; i++) {
+            lld1.addLast(i);
+        }
+
+        for (int i : lld1) {
+            System.out.println(i);
+        }
+
+        for (int i = 0; i < 8; i++) {
+            assertEquals("Should have the same value", i, lld1.get(i), 0.0);
+        }
+
+        for (int i = 0; i < 4; i++) {
+            assertEquals("Should have the same value", i, lld1.removeFirst(), 0.0);
+        }
+
+        for (int i = 7; i > 4; i--) {
+            assertEquals("Should have the same value", i, lld1.removeLast(), 0.0);
+        }
+    }
+
+    @Test
     /* Add large number of elements to deque; check if order is correct. */
     public void bigLLDequeTest() {
 

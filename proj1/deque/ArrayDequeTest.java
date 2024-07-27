@@ -109,6 +109,10 @@ public class ArrayDequeTest {
             lld1.addLast(i);
         }
 
+        for (int i : lld1) {
+            System.out.println(i);
+        }
+
         for (int i = 0; i < 8; i++) {
             assertEquals("Should have the same value", i, lld1.get(i), 0.0);
         }
@@ -139,20 +143,4 @@ public class ArrayDequeTest {
             assertEquals("Should have the same value", i, (double) lld1.removeLast(), 0.0);
         }
     }
-
-    /**
-    @Test
-    public void randomizedTest() {
-        ArrayDeque<Integer> deque = new ArrayDeque<>();
-
-        int N = 5000;
-        for (int i = 0; i < N; i++) {
-            int operationNumber = StdRandom.uniform(0,);
-            switch (operationNumber) {
-                case 0:
-
-            }
-        }
-    }
-     */
 }

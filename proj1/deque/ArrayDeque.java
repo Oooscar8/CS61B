@@ -1,6 +1,8 @@
 package deque;
 
-public class ArrayDeque<T> {
+import java.util.Iterator;
+
+public class ArrayDeque<T> implements Iterable<T> {
     private T[] items;
     private int size;
     private int nextFirst;
@@ -102,11 +104,30 @@ public class ArrayDeque<T> {
         return items[(nextFirst + 1 + index) % items.length];
     }
 
-    /**
     public Iterator<T> iterator(){
-
+        return new ArrayDequeIterator();
      }
 
+     private class ArrayDequeIterator implements Iterator<T> {
+        private int wizPos;
+        private int i;
+
+        public ArrayDequeIterator(){
+            wizPos = (nextFirst + 1) % items.length;
+            i = 0;
+        }
+        public boolean hasNext() {
+            return i < size;
+        }
+        public T next() {
+            T returnItem = items[wizPos];
+            wizPos = (wizPos + 1) % items.length;
+            i++;
+            return returnItem;
+        }
+     }
+
+     /*
     public boolean equals(Object o){
 
      }
