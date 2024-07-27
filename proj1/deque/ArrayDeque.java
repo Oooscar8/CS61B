@@ -60,18 +60,10 @@ public class ArrayDeque<T> implements Iterable<T> {
     }
 
     public void printDeque(){
-        if (nextFirst < nextLast) {
-            for (int i = nextFirst + 1; i < nextLast; i++) {
-                System.out.print(items[i] + " ");
-            }
-            System.out.println();
+        for (int i = 0; i < size; ++i) {
+            System.out.print(get(i) + " ");
         }
-        else {
-            for (int i = nextFirst + 1; i < nextLast + items.length; i--) {
-                System.out.print(items[i % items.length] + " ");
-            }
-            System.out.println();
-        }
+        System.out.println();
     }
 
     public T removeFirst(){
@@ -110,26 +102,36 @@ public class ArrayDeque<T> implements Iterable<T> {
 
      private class ArrayDequeIterator implements Iterator<T> {
         private int wizPos;
-        private int i;
 
         public ArrayDequeIterator(){
-            wizPos = (nextFirst + 1) % items.length;
-            i = 0;
+            wizPos = 0;
         }
         public boolean hasNext() {
-            return i < size;
+            return wizPos < size;
         }
         public T next() {
-            T returnItem = items[wizPos];
-            wizPos = (wizPos + 1) % items.length;
-            i++;
+            T returnItem = get(wizPos);
+            wizPos += 1;
             return returnItem;
         }
      }
 
-     /*
     public boolean equals(Object o){
-
+        if (this == o){
+            return true;
+        }
+        if (!(o instanceof ArrayDeque)){
+            return false;
+        }
+        ArrayDeque that = (ArrayDeque) o;
+        if (that.size() != this.size()){
+            return false;
+        }
+        for (int i = 0; i < this.size(); ++i) {
+            if (that.get(i) != this.get(i)) {
+                return false;
+            }
+        }
+        return true;
      }
-     */
 }
