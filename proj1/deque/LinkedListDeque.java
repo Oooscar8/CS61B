@@ -99,7 +99,9 @@ public class LinkedListDeque<T> implements Deque<T> {
         }
 
         Node p = sentinel.next;
-        if (index == 0) return p.item;
+        if (index == 0) {
+            return p.item;
+        }
         return getRecursive(index - 1);
     }
 
@@ -110,7 +112,7 @@ public class LinkedListDeque<T> implements Deque<T> {
     private class LinkedListDequeIterator implements Iterator<T> {
         private int wizPos;
 
-        public LinkedListDequeIterator() {
+        LinkedListDequeIterator() {
             wizPos = 0;
         }
         public boolean hasNext() {
@@ -124,7 +126,7 @@ public class LinkedListDeque<T> implements Deque<T> {
     }
 
     public boolean equals(Object o) {
-        if (this == o){
+        if (this == o) {
             return true;
         }
         if (!(o instanceof Deque)) {

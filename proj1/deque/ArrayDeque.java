@@ -42,7 +42,7 @@ public class ArrayDeque<T> implements Deque<T> {
 
     @Override
     public void addLast(T item) {
-        if (size == items.length){
+        if (size == items.length) {
             resize(size * 2);
         }
 
@@ -106,12 +106,12 @@ public class ArrayDeque<T> implements Deque<T> {
 
     public Iterator<T> iterator() {
         return new ArrayDequeIterator();
-     }
+    }
 
-     private class ArrayDequeIterator implements Iterator<T> {
+    private class ArrayDequeIterator implements Iterator<T> {
         private int wizPos;
 
-        public ArrayDequeIterator() {
+        ArrayDequeIterator() {
             wizPos = 0;
         }
         public boolean hasNext() {
@@ -122,10 +122,10 @@ public class ArrayDeque<T> implements Deque<T> {
             wizPos += 1;
             return returnItem;
         }
-     }
+    }
 
     public boolean equals(Object o) {
-        if (this == o){
+        if (this == o) {
             return true;
         }
         if (!(o instanceof Deque)) {
@@ -141,5 +141,5 @@ public class ArrayDeque<T> implements Deque<T> {
             }
         }
         return true;
-     }
+    }
 }
