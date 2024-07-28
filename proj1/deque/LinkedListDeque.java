@@ -95,7 +95,6 @@ public class LinkedListDeque<T> implements Deque<T> {
         return getRecursive(index - 1);
     }
 
-    @Override
     public Iterator<T> iterator(){
         return new LinkedListDequeIterator();
     }
@@ -116,7 +115,6 @@ public class LinkedListDeque<T> implements Deque<T> {
         }
     }
 
-    @Override
     public boolean equals(Object o){
         if (this == o){
             return true;

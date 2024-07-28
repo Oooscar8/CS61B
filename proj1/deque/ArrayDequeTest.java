@@ -2,6 +2,9 @@ package deque;
 
 import edu.princeton.cs.algs4.StdRandom;
 import org.junit.Test;
+
+import java.util.Iterator;
+
 import static org.junit.Assert.*;
 
 public class ArrayDequeTest {
@@ -109,8 +112,9 @@ public class ArrayDequeTest {
             lld1.addLast(i);
         }
 
-        for (int i : lld1) {
-            System.out.println(i);
+        Iterator<Integer> seer = lld1.iterator();
+        while(seer.hasNext()) {
+            System.out.println(seer.next());
         }
 
         for (int i = 0; i < 8; i++) {
