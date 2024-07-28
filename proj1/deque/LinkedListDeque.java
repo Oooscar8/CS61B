@@ -94,17 +94,19 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     /** Same as get, but uses recursion. */
-    private Node r = sentinel;
     public T getRecursive(int index) {
         if (index < 0 || index >= size()) {
             return null;
         }
+        Node p = sentinel.next;
+        return getRecursiveHelper(index, p);
+    }
 
-        r = r.next;
+    private T getRecursiveHelper(int index, Node p){
         if (index == 0) {
-            return r.item;
+            return p.item;
         }
-        return getRecursive(index - 1);
+        return getRecursiveHelper(index - 1, p.next);
     }
 
     public Iterator<T> iterator() {

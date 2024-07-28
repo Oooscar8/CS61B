@@ -112,7 +112,7 @@ public class LinkedListDequeTest {
     /** Add 8 elements to deque; check if order is correct. */
     public void EightDequeTest() {
 
-        LinkedListDeque<Integer> lld1 = new LinkedListDeque<Integer>();
+        LinkedListDeque<Integer> lld1 = new LinkedListDeque<>();
 
         for (int i = 0; i < 8; i++) {
             lld1.addLast(i);
