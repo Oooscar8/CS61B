@@ -128,10 +128,10 @@ public class ArrayDeque<T> implements Deque<T> {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Deque)) {
+        if (!(o instanceof ArrayDeque)) {
             return false;
         }
-        Deque that = (Deque) o;
+        ArrayDeque that = (ArrayDeque) o;
         if (that.size() != this.size()) {
             return false;
         }
