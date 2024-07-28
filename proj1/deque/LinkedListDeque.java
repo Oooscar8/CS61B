@@ -5,11 +5,11 @@ import java.util.Iterator;
 public class LinkedListDeque<T> implements Deque<T> {
 
     private class Node {
-        public T item;
-        public Node prev;
-        public Node next;
+        T item;
+        Node prev;
+        Node next;
 
-        public Node(T t, Node p, Node n){
+        Node(T t, Node p, Node n) {
             item = t;
             prev = p;
             next = n;
@@ -20,33 +20,33 @@ public class LinkedListDeque<T> implements Deque<T> {
     private int size;
 
     /** Creates an empty linked list deque. */
-    public LinkedListDeque(){
+    public LinkedListDeque() {
         sentinel = new Node(null, null, null);
         sentinel.next = sentinel;
         sentinel.prev = sentinel;
     }
 
     @Override
-    public void addLast(T item){
+    public void addLast(T item) {
         sentinel.prev.next = new Node(item, sentinel.prev, sentinel);
         sentinel.prev = sentinel.prev.next;
         size = size + 1;
     }
 
     @Override
-    public void addFirst(T item){
+    public void addFirst(T item) {
         sentinel.next.prev = new Node(item, sentinel, sentinel.next);
         sentinel.next = sentinel.next.prev;
         size = size + 1;
     }
 
     @Override
-    public int size(){
+    public int size() {
         return size;
     }
 
     @Override
-    public void printDeque(){
+    public void printDeque() {
         for (int i = 0; i < size; ++i) {
             System.out.print(get(i) + " ");
         }
@@ -54,30 +54,36 @@ public class LinkedListDeque<T> implements Deque<T> {
     }
 
     @Override
-    public T removeFirst(){
-        if (isEmpty()) return null;
+    public T removeFirst() {
+        if (isEmpty()) {
+            return null;
+        }
 
-        T FirstItem = sentinel.next.item;
+        T firstItem = sentinel.next.item;
         sentinel.next = sentinel.next.next;
         sentinel.next.next.prev = sentinel;
         size = size - 1;
-        return FirstItem;
+        return firstItem;
     }
 
     @Override
-    public T removeLast(){
-        if (isEmpty()) return null;
+    public T removeLast() {
+        if (isEmpty()) {
+            return null;
+        }
 
-        T LastItem = sentinel.prev.item;
+        T lastItem = sentinel.prev.item;
         sentinel.prev = sentinel.prev.prev;
         sentinel.prev.prev.next = sentinel;
         size = size - 1;
-        return LastItem;
+        return lastItem;
     }
 
     @Override
-    public T get(int index){
-        if (index < 0 || index >= size()) return null;
+    public T get(int index) {
+        if (index < 0 || index >= size()) {
+            return null;
+        }
 
         Node p = sentinel.next;
         for (int i = 0; i < index; i++) {
@@ -87,22 +93,24 @@ public class LinkedListDeque<T> implements Deque<T> {
     }
 
     /** Same as get, but uses recursion. */
-    public T getRecursive(int index){
-        if (index < 0 || index >= size()) return null;
+    public T getRecursive(int index) {
+        if (index < 0 || index >= size()) {
+            return null;
+        }
 
         Node p = sentinel.next;
         if (index == 0) return p.item;
         return getRecursive(index - 1);
     }
 
-    public Iterator<T> iterator(){
+    public Iterator<T> iterator() {
         return new LinkedListDequeIterator();
     }
 
     private class LinkedListDequeIterator implements Iterator<T> {
         private int wizPos;
 
-        public LinkedListDequeIterator(){
+        public LinkedListDequeIterator() {
             wizPos = 0;
         }
         public boolean hasNext() {
@@ -115,15 +123,15 @@ public class LinkedListDeque<T> implements Deque<T> {
         }
     }
 
-    public boolean equals(Object o){
+    public boolean equals(Object o) {
         if (this == o){
             return true;
         }
-        if (!(o instanceof Deque)){
+        if (!(o instanceof Deque)) {
             return false;
         }
         Deque that = (Deque) o;
-        if (that.size() != this.size()){
+        if (that.size() != this.size()) {
             return false;
         }
         for (int i = 0; i < this.size(); ++i) {
