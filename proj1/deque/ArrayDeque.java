@@ -2,7 +2,7 @@ package deque;
 
 import java.util.Iterator;
 
-public class ArrayDeque<T> implements Iterable<T> {
+public class ArrayDeque<T> implements Deque<T> {
     private T[] items;
     private int size;
     private int nextFirst;
@@ -14,7 +14,6 @@ public class ArrayDeque<T> implements Iterable<T> {
         nextFirst = 4;
         nextLast = 5;
     }
-
 
     private void resize(int capacity) {
         T[] a = (T[]) new Object[capacity];
@@ -30,7 +29,7 @@ public class ArrayDeque<T> implements Iterable<T> {
         nextLast = size;
     }
 
-
+    @Override
     public void addFirst(T item){
         if (size == items.length){
             resize(size * 2);
@@ -41,6 +40,7 @@ public class ArrayDeque<T> implements Iterable<T> {
         size = size + 1;
     }
 
+    @Override
     public void addLast(T item){
         if (size == items.length){
             resize(size * 2);
@@ -51,14 +51,12 @@ public class ArrayDeque<T> implements Iterable<T> {
         size = size + 1;
     }
 
-    public boolean isEmpty(){
-        return size == 0;
-    }
-
+    @Override
     public int size(){
         return size;
     }
 
+    @Override
     public void printDeque(){
         for (int i = 0; i < size; ++i) {
             System.out.print(get(i) + " ");
@@ -66,6 +64,7 @@ public class ArrayDeque<T> implements Iterable<T> {
         System.out.println();
     }
 
+    @Override
     public T removeFirst(){
         if (isEmpty()) return null;
 
@@ -79,6 +78,7 @@ public class ArrayDeque<T> implements Iterable<T> {
         return FirstItem;
     }
 
+    @Override
     public T removeLast(){
         if (isEmpty()) return null;
 
@@ -92,10 +92,13 @@ public class ArrayDeque<T> implements Iterable<T> {
         return LastItem;
     }
 
+    @Override
     public T get(int index) {
+        if (index < 0 || index >= size()) return null;
         return items[(nextFirst + 1 + index) % items.length];
     }
 
+    @Override
     public Iterator<T> iterator(){
         return new ArrayDequeIterator();
      }
@@ -120,10 +123,10 @@ public class ArrayDeque<T> implements Iterable<T> {
         if (this == o){
             return true;
         }
-        if (!(o instanceof ArrayDeque)){
+        if (!(o instanceof Deque)){
             return false;
         }
-        ArrayDeque that = (ArrayDeque) o;
+        Deque that = (Deque) o;
         if (that.size() != this.size()){
             return false;
         }
