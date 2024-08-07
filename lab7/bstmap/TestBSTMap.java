@@ -90,9 +90,21 @@ public class TestBSTMap {
     @Test
     public void printInOrderTest() {
         BSTMap<Integer, Integer> b = new BSTMap<>();
-        for (int i = 0; i < 50; i++) {
-            b.put(i, 1+i);
+        b.put(5, 5);
+        b.put(4, 4);
+        b.put(6, 6);
+        b.put(3, 3);
+        b.put(7, 7);
+        b.put(2, 2);
+        b.put(8, 8);
+        b.put(1, 1);
+        b.put(9, 9);
+        b.put(0, 0);
+
+        for (int k : b) {
+            System.out.print(k + " ");
         }
+        System.out.println();
         b.printInOrder();
     }
 }

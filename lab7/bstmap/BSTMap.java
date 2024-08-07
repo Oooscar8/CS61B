@@ -161,18 +161,15 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
 
         public BSTIterator(BSTNode n) {
             current = n;
-            BSTStack.push(current);
         }
 
         public boolean hasNext() {
-            return (!BSTStack.isEmpty());
+            return (!BSTStack.isEmpty() || current != null);
         }
 
         public K next() {
             while (current != null) {
-                if (current != root) {
-                    BSTStack.push(current);
-                }
+                BSTStack.push(current);
                 current = current.left;
             }
 
