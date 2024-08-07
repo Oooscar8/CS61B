@@ -2,8 +2,9 @@ package bstmap;
 
 import java.util.Set;
 import java.util.Iterator;
+import java.util.Stack;
 
-public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
+public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V>, Iterable<K> {
     BSTNode root;        // root of BST
 
     private class BSTNode {
@@ -146,6 +147,34 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
 
     @Override
     public Iterator<K> iterator() {
-        throw new UnsupportedOperationException();
+        return new BSTIterator(root);
+    }
+
+    private class BSTIterator implements Iterator<K> {
+        BSTNode current;
+        private Stack<BSTNode> BSTStack = new Stack<>();
+
+        public BSTIterator(BSTNode n) {
+            current = n;
+            BSTStack.push(current);
+        }
+
+        public boolean hasNext() {
+            return (!BSTStack.isEmpty());
+        }
+
+        public K next() {
+            while (current != null) {
+                if (current != root) {
+                    BSTStack.push(current);
+                }
+                current = current.left;
+            }
+
+            current = BSTStack.pop();
+            BSTNode node = current;
+            current = current.right;
+            return node.key;
+        }
     }
 }
