@@ -139,7 +139,49 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
      * Not required for Lab 7. If you don't implement this, throw an
      * UnsupportedOperationException. */
     public V remove(K key) {
-        throw new UnsupportedOperationException();
+        V value = get(key);
+        if (value != null) {
+            root = remove(root, key);
+            return value;
+        }
+        return null;
+    }
+
+    private BSTNode remove(BSTNode n, K key) {
+        if (n == null) return null;
+        if (n.key.compareTo(key) < 0) {
+            n.right = remove(n.right, key);
+        } else if (n.key.compareTo(key) > 0) {
+            n.left = remove(n.left, key);
+        } else {
+            if (n.right == null) {
+                return n.left;
+            }
+            if (n.left == null) {
+                return n.right;
+            }
+            BSTNode t = min(n.right);
+            n.right = deleteMin(n.right);
+            return t;
+        }
+        n.size = size(n.left) + size(n.right) + 1;
+        return n;
+    }
+
+    private BSTNode min(BSTNode n) {
+        if (n.left == null) {
+            return n;
+        }
+        return min(n.left);
+    }
+
+    private BSTNode deleteMin(BSTNode n) {
+        if (n.left == null) {
+            return n.right;
+        }
+        n.left = deleteMin(n.left);
+        n.size = size(n.left) + size(n.right) + 1;
+        return n;
     }
 
     @Override
@@ -147,7 +189,11 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
      * the specified value. Not required for Lab 7. If you don't implement this,
      * throw an UnsupportedOperationException.*/
     public V remove(K key, V value) {
-        throw new UnsupportedOperationException();
+        if (value == get(key)) {
+            root = remove(root, key);
+            return value;
+        }
+        return null;
     }
 
     @Override
