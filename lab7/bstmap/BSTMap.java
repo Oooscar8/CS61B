@@ -160,9 +160,10 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
             if (n.left == null) {
                 return n.right;
             }
-            BSTNode t = min(n.right);
-            n.right = deleteMin(n.right);
-            return t;
+            BSTNode t = n;
+            n = min(n.right);
+            n.right = deleteMin(t.right);
+            n.left = t.left;
         }
         n.size = size(n.left) + size(n.right) + 1;
         return n;
