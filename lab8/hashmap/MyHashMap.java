@@ -1,9 +1,6 @@
 package hashmap;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * A hash table-backed Map implementation. Provides amortized constant time
@@ -34,23 +31,25 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     private Collection<Node>[] buckets;
     // You should probably define some more!
     private int size = 16;
+    private int num = 0;
     private double loadFactor = 0.75;
+    Set<K> k = new HashSet<>();
 
     /**
      * Constructors
      */
     public MyHashMap() {
-        Collection<Node>[] buckets = createTable(size);
-        for (Collection<Node> bucket : buckets) {
-            bucket = createBucket();
+        buckets = createTable(size);
+        for (int i = 0; i < buckets.length; i++) {
+            buckets[i] = createBucket();
         }
     }
 
     public MyHashMap(int initialSize) {
         size = initialSize;
-        Collection<Node>[] buckets = createTable(size);
-        for (Collection<Node> bucket : buckets) {
-            bucket = createBucket();
+        buckets = createTable(size);
+        for (int i = 0; i < buckets.length; i++) {
+            buckets[i] = createBucket();
         }
     }
 
@@ -64,9 +63,9 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     public MyHashMap(int initialSize, double maxLoad) {
         size = initialSize;
         loadFactor = maxLoad;
-        Collection<Node>[] buckets = createTable(size);
-        for (Collection<Node> bucket : buckets) {
-            bucket = createBucket();
+        buckets = createTable(size);
+        for (int i = 0; i < buckets.length; i++) {
+            buckets[i] = createBucket();
         }
     }
 
@@ -96,7 +95,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      * OWN BUCKET DATA STRUCTURES WITH THE NEW OPERATOR!
      */
     protected Collection<Node> createBucket() {
-        return null;
+        return new LinkedList<>();
     }
 
     /**
@@ -119,14 +118,17 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      * Removes all of the mappings from this map.
      */
     public void clear() {
-        throw new UnsupportedOperationException("This operation is not supported");
+        MyHashMap<K, V> temp = new MyHashMap(size, loadFactor);
+        this.buckets = temp.buckets;
+        this.num = temp.num;
+        this.k = temp.k;
     }
 
     /**
      * Returns true if this map contains a mapping for the specified key.
      */
     public boolean containsKey(K key) {
-        throw new UnsupportedOperationException("This operation is not supported");
+        return k.contains(key);
     }
 
     /**
@@ -134,14 +136,21 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      * map contains no mapping for the key.
      */
     public V get(K key) {
-        throw new UnsupportedOperationException("This operation is not supported");
+        int hashCode = key.hashCode();
+        int i = Math.floorMod(hashCode, size);
+        for (Node node : buckets[i]) {
+            if (node.key.equals(key)) {
+                return node.value;
+            }
+        }
+        return null;
     }
 
     /**
      * Returns the number of key-value mappings in this map.
      */
     public int size() {
-        throw new UnsupportedOperationException("This operation is not supported");
+        return num;
     }
 
     /**
@@ -150,14 +159,39 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      * the old value is replaced.
      */
     public void put(K key, V value) {
-        throw new UnsupportedOperationException("This operation is not supported");
+        // double table size if average length of list >= 10
+        if (num / size > loadFactor) {
+            resize(2 * size);
+        }
+        int hashCode = key.hashCode();
+        int i = Math.floorMod(hashCode, size);
+        for (Node node : buckets[i]) {
+            if (node.key.equals(key)) {
+                node.value = value;
+                return;
+            }
+        }
+        buckets[i].add(createNode(key, value));
+        num += 1;
+        k.add(key);
+    }
+
+    private void resize(int newSize) {
+        MyHashMap<K, V> temp = new MyHashMap(newSize);
+        for (Collection<Node> bucket : buckets) {
+            for (Node node : bucket) {
+                temp.put(node.key, node.value);
+            }
+        }
+        this.buckets = temp.buckets;
+        this.size = temp.size;
     }
 
     /**
      * Returns a Set view of the keys contained in this map.
      */
     public Set<K> keySet() {
-        throw new UnsupportedOperationException("This operation is not supported");
+        return k;
     }
 
     /**
@@ -184,17 +218,18 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     }
 
     private class HashMapIterator implements Iterator<K> {
+        Iterator<K> iterator;
 
         public HashMapIterator() {
-            throw new UnsupportedOperationException("This operation is not supported");
+            iterator = k.iterator();
         }
 
         public boolean hasNext() {
-            throw new UnsupportedOperationException("This operation is not supported");
+            return iterator.hasNext();
         }
 
         public K next() {
-            throw new UnsupportedOperationException("This operation is not supported");
+            return iterator.next();
         }
     }
 
