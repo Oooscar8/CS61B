@@ -622,7 +622,11 @@ Hashing过程:
 
 o3的static type是Object, Object对象没有bark method, 因此`o3.bark()`错误。
 
+
+
 ### My Implementation
+
+#### 编写create*和构造函数
 
 首先编写`createNode()`,`createTable()`,`createBucket()`
 
@@ -630,38 +634,94 @@ o3的static type是Object, Object对象没有bark method, 因此`o3.bark()`错�
 
 其中`createBucket()`会在*Bucket classes中重写
 
+首先演示错误写法：
+
 ```
 public MyHashMap() {
-        Collection<Node>[] buckets = createTable(size);
+        buckets = createTable(size);
         for (Collection<Node> bucket : buckets) {
             bucket = createBucket();
+        }
+    }
+```
+
+为什么这样为bucket赋值是错误的？
+
+>使用`for (Collection<Node> bucket : buckets)`遍历buckets时，bucket是局部变量，而对bucket赋值并不会改变buckets数组本身的值
+
+应该怎么写？
+
+> 很简单，直接用数组下标对其赋值：
+
+```
+public MyHashMap() {
+        buckets = createTable(size);
+        for (int i = 0; i < buckets.length; i++) {
+            buckets[i] = createBucket();
+        }
+    }
+```
+
+完整此部分代码：
+
+```
+   public MyHashMap() {
+        buckets = createTable(size);
+        for (int i = 0; i < buckets.length; i++) {
+            buckets[i] = createBucket();
         }
     }
 
     public MyHashMap(int initialSize) {
         size = initialSize;
-        Collection<Node>[] buckets = createTable(size);
-        for (Collection<Node> bucket : buckets) {
-            bucket = createBucket();
+        buckets = createTable(size);
+        for (int i = 0; i < buckets.length; i++) {
+            buckets[i] = createBucket();
         }
     }
 
     public MyHashMap(int initialSize, double maxLoad) {
         size = initialSize;
         loadFactor = maxLoad;
-        Collection<Node>[] buckets = createTable(size);
-        for (Collection<Node> bucket : buckets) {
-            bucket = createBucket();
+        buckets = createTable(size);
+        for (int i = 0; i < buckets.length; i++) {
+            buckets[i] = createBucket();
         }
     }
-    
+
     private Node createNode(K key, V value) {
         return new Node(key, value);
     }
-     protected Collection<Node> createBucket() {
-        return null;
+
+    protected Collection<Node> createBucket() {
+        return new LinkedList<>();
     }
+
     private Collection<Node>[] createTable(int tableSize) {
         return new Collection[tableSize];
     }
 ```
+
+#### 定义HashMap的Instance Variable
+
+其中，k用来保存Map中所有的key，方便编写`containsKey`,`keySet`和`iterator` methods
+
+```
+private Collection<Node>[] buckets;
+private int size = 16;
+private int num = 0;
+private double loadFactor = 0.75;
+private Set<K> k = new HashSet<>();
+```
+
+#### 实现Map61B
+
+实现与Lab7 BSTMap中相同的函数，但是比BSTMap容易一些，因此解析省略
+
+详见[我的github仓库](https://github.com/Oooscar8/CS61B/blob/22958c612af4b2b71097ff014d6d2203e2510ea3/lab8/hashmap/MyHashMap.java)
+
+#### 结果
+
+通过！
+
+<img src="https://gitee.com/OooAlex/study_note/raw/master/img/202409021449054.png" alt="image-20240902144907860" style="zoom: 50%;" />
