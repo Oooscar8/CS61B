@@ -30,18 +30,28 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     }
 
     /* Instance Variables */
+    // Each Collection object is a single bucket, containing nodes.
     private Collection<Node>[] buckets;
     // You should probably define some more!
+    private int size = 16;
+    private double loadFactor = 0.75;
 
     /**
      * Constructors
      */
     public MyHashMap() {
-        throw new UnsupportedOperationException("This operation is not supported");
+        Collection<Node>[] buckets = createTable(size);
+        for (Collection<Node> bucket : buckets) {
+            bucket = createBucket();
+        }
     }
 
     public MyHashMap(int initialSize) {
-        throw new UnsupportedOperationException("This operation is not supported");
+        size = initialSize;
+        Collection<Node>[] buckets = createTable(size);
+        for (Collection<Node> bucket : buckets) {
+            bucket = createBucket();
+        }
     }
 
     /**
@@ -52,14 +62,19 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      * @param maxLoad     maximum load factor
      */
     public MyHashMap(int initialSize, double maxLoad) {
-        throw new UnsupportedOperationException("This operation is not supported");
+        size = initialSize;
+        loadFactor = maxLoad;
+        Collection<Node>[] buckets = createTable(size);
+        for (Collection<Node> bucket : buckets) {
+            bucket = createBucket();
+        }
     }
 
     /**
      * Returns a new node to be placed in a hash table bucket
      */
     private Node createNode(K key, V value) {
-        return null;
+        return new Node(key, value);
     }
 
     /**
@@ -94,7 +109,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      * @param tableSize the size of the table to create
      */
     private Collection<Node>[] createTable(int tableSize) {
-        return null;
+        return new Collection[tableSize];
     }
 
     // TODO: Implement the methods of the Map61B Interface below

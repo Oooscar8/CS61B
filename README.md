@@ -533,3 +533,135 @@ static <T extends Serializable> T readObject(File file, Class<T> expectedClass);
 (e.g.) Dog d = readObject(inFile, Dog.class);
 ```
 
+
+
+## Lab8 HashMap
+
+构建hash table时，可以用不同的data structures创建buckets
+
+![image-20240901150722434](https://gitee.com/OooAlex/study_note/raw/master/img/202409011507552.png)
+
+### Starter File
+
+```
+Map61B.java
+└── MyHashMap.java
+    ├── MyHashMapALBuckets.java
+    ├── MyHashMapHSBuckets.java
+    ├── MyHashMapLLBuckets.java
+    ├── MyHashMapPQBuckets.java
+    └── MyHashMapTSBuckets.java
+```
+
+### Starter Code
+
+```
+// Each Collection object is a single bucket, containing nodes.
+private Collection<Node>[] buckets;
+```
+
+* `ArrayList`, `LinkedList`, `TreeSet`, `HashSet`, `PriorityQueue`这些data structures都是继承的`Collection` Interface。因此利用多态性(polymorphism), static type 为`Collection<Node>` 的objects可以用以上各种data structures实例化，e.g. `LinkedList<Node>` or `ArrayList<Node>`
+
+* expression `new Collection<Node>[size]` is illegal, should create `new Collection[size]` 
+
+每一个*Buckets classes instantiates `buckets` with a different type of data structure
+
+例如：
+
+```
+protected Collection<Node> createBucket() {
+	return new LinkedList<>();
+}
+```
+
+### Implementation Requirements
+
+1. 实现以下构造函数：
+
+```
+public MyHashMap();
+public MyHashMap(int initialSize);
+public MyHashMap(int initialSize, double loadFactor);
+```
+
+2. 实现keySet和iterator
+
+> create a `HashSet` instance variable that holds all the keys
+
+3. additional requirements for `MyHashMap`：
+
+* hash map initially have a number of buckets equal to `initialSize`
+
+* increase the size of `MyHashMap` when the load factor exceeds the set `loadFactor`
+
+  $ loadFactor = N/M $
+
+  `N` is the number of elements in the map and `M` is the number of buckets
+
+* hashCode() method 可能会返回负值，要将此种情况考虑
+
+![image-20240901154820365](https://gitee.com/OooAlex/study_note/raw/master/img/202409011548609.png)
+
+![image-20240901154832467](https://gitee.com/OooAlex/study_note/raw/master/img/202409011548537.png)
+
+Hashing过程:
+
+![image-20240901161248774](https://gitee.com/OooAlex/study_note/raw/master/img/202409011612844.png)
+
+* If the same key is inserted more than once, the value should be updated each time. `null` keys will never be inserted.
+
+* Collection class provides methods needed to implement HashMap: `add`, `remove`, and `iterator`. When you are searching for a `Node` in a `Collection`, simply iterate over the `Collection`, and find the `Node` whose `key` is `.equal()` to the key you are searching for.
+
+### Recall Inheritance & subtype polymorphism
+
+![image-20240901213605201](https://gitee.com/OooAlex/study_note/raw/master/img/202409012136302.png)
+
+![image-20240901213628580](https://gitee.com/OooAlex/study_note/raw/master/img/202409012136666.png)
+
+![image-20240901213857774](https://gitee.com/OooAlex/study_note/raw/master/img/202409012138864.png)
+
+o3的static type是Object, Object对象没有bark method, 因此`o3.bark()`错误。
+
+### My Implementation
+
+首先编写`createNode()`,`createTable()`,`createBucket()`
+
+再编写构造函数，利用`createTable()`创建buckets数组, `createBucket()`创建每一个bucket
+
+其中`createBucket()`会在*Bucket classes中重写
+
+```
+public MyHashMap() {
+        Collection<Node>[] buckets = createTable(size);
+        for (Collection<Node> bucket : buckets) {
+            bucket = createBucket();
+        }
+    }
+
+    public MyHashMap(int initialSize) {
+        size = initialSize;
+        Collection<Node>[] buckets = createTable(size);
+        for (Collection<Node> bucket : buckets) {
+            bucket = createBucket();
+        }
+    }
+
+    public MyHashMap(int initialSize, double maxLoad) {
+        size = initialSize;
+        loadFactor = maxLoad;
+        Collection<Node>[] buckets = createTable(size);
+        for (Collection<Node> bucket : buckets) {
+            bucket = createBucket();
+        }
+    }
+    
+    private Node createNode(K key, V value) {
+        return new Node(key, value);
+    }
+     protected Collection<Node> createBucket() {
+        return null;
+    }
+    private Collection<Node>[] createTable(int tableSize) {
+        return new Collection[tableSize];
+    }
+```
