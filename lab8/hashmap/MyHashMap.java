@@ -33,7 +33,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     private int size = 16;
     private int num = 0;
     private double loadFactor = 0.75;
-    Set<K> k = new HashSet<>();
+    private Set<K> k = new HashSet<>();
 
     /**
      * Constructors
@@ -200,7 +200,18 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      * UnsupportedOperationException.
      */
     public V remove(K key) {
-        throw new UnsupportedOperationException("This operation is not supported");
+        int hashCode = key.hashCode();
+        int i = Math.floorMod(hashCode, size);
+        for (Node node : buckets[i]) {
+            if (node.key.equals(key)) {
+                V removedValue = node.value;
+                buckets[i].remove(node);
+                num -= 1;
+                k.remove(key);
+                return removedValue;
+            }
+        }
+        return null;
     }
 
     /**
@@ -209,7 +220,18 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      * throw an UnsupportedOperationException.
      */
     public V remove(K key, V value) {
-        throw new UnsupportedOperationException("This operation is not supported");
+        int hashCode = key.hashCode();
+        int i = Math.floorMod(hashCode, size);
+        for (Node node : buckets[i]) {
+            if (node.key.equals(key) && node.value.equals(value)) {
+                V removedValue = node.value;
+                buckets[i].remove(node);
+                num -= 1;
+                k.remove(key);
+                return removedValue;
+            }
+        }
+        return null;
     }
 
     @Override
