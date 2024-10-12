@@ -1,4 +1,26 @@
+[toc]
+
 # CS61B- s21
+
+
+
+# 前言
+
+当前仓库包含了我学习的UCB CS61B-21sp课程的所有coding作业(包含lab和project)
+
+## 当前学习进度
+
+我已经完成了所有java语法和data structure部分的lectures的学习，即lecture1-25(前9周)
+
+完成了除project2(gitlet), project3(CS61BYoW), lab12 + 13(project3相关)的所有coding作业
+
+## 未来计划
+
+学完lecture26-40关于software engineering的部分，完成剩余的coding作业
+
+## 关于README
+
+当前README文件包含了我学习lectures以及完成coding作业过程中记录下的一些笔记，后续完成剩余部分学习以及复习前面部分的时候可能会补充笔记
 
 
 
@@ -622,11 +644,9 @@ Hashing过程:
 
 o3的static type是Object, Object对象没有bark method, 因此`o3.bark()`错误。
 
-
-
 ### My Implementation
 
-#### 编写create*和构造函数
+#### 编写`create`和构造函数
 
 首先编写`createNode()`,`createTable()`,`createBucket()`
 
@@ -645,13 +665,13 @@ public MyHashMap() {
     }
 ```
 
-为什么这样为bucket赋值是错误的？
+> 为什么这样为bucket赋值是错误的？
 
->使用`for (Collection<Node> bucket : buckets)`遍历buckets时，bucket是局部变量，而对bucket赋值并不会改变buckets数组本身的值
+使用`for (Collection<Node> bucket : buckets)`遍历buckets时，bucket是局部变量，而对bucket赋值并不会改变buckets数组本身的值
 
-应该怎么写？
+> 应该怎么写？
 
-> 很简单，直接用数组下标对其赋值：
+很简单，直接用数组下标对其赋值：
 
 ```
 public MyHashMap() {
@@ -718,7 +738,7 @@ private Set<K> k = new HashSet<>();
 
 实现与Lab7 BSTMap中相同的函数，但是比BSTMap容易一些，因此解析省略
 
-详见[我的github仓库](https://github.com/Oooscar8/CS61B/blob/22958c612af4b2b71097ff014d6d2203e2510ea3/lab8/hashmap/MyHashMap.java)
+详见[我的代码](https://github.com/Oooscar8/CS61B/blob/22958c612af4b2b71097ff014d6d2203e2510ea3/lab8/hashmap/MyHashMap.java)
 
 #### 结果
 
